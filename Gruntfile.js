@@ -112,7 +112,7 @@ module.exports = function (grunt) {
 
         express: {
             options: {
-                port: 6004
+                port: 6017
             },
             build: {
                 options: {

@@ -50,7 +50,7 @@ class Youtube extends SourceServer {
  * @type number
  * @private
  */
-var _YoutubeListeningPort : number = process.env.PORT || 6004;
+var _YoutubeListeningPort : number = process.env.PORT || 6017;
 
 /**
  * Server's Youtube command line arguments.
