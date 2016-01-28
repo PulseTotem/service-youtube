@@ -53,13 +53,14 @@ class PlaylistInfo extends SourceItf {
 			self.getSourceNamespaceManager().sendNewInfoToClient(tweetList);*/
 
 			var successSearch = function(result) {
+				Logger.info("result");
 				Logger.debug(result);
 			};
 
 			Logger.info("youtubeOAuth OK ! => oauthActions")
 			Logger.debug(oauthActions);
 
-			var searchUrl = '/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20';
+			var searchUrl = '/youtube/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20';
 
 			Logger.info("searchUrl => " + searchUrl);
 
