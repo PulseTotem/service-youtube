@@ -56,7 +56,13 @@ class PlaylistInfo extends SourceItf {
 				Logger.debug(result);
 			};
 
+			Logger.info("youtubeOAuth OK ! => oauthActions")
+			Logger.debug(oauthActions);
+
 			var searchUrl = '/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20';
+
+			Logger.info("searchUrl => " + searchUrl);
+
 			oauthActions.get(searchUrl, successSearch, fail);
 		};
 
