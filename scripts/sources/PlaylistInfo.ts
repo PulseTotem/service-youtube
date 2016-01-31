@@ -12,10 +12,12 @@
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoPlaylist.ts" />
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoURL.ts" />
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoType.ts" />
+/// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/Picture.ts" />
+/// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/PictureURL.ts" />
 
 /// <reference path="../YoutubeNamespaceManager.ts" />
 
-var uuid : any = require('node-uuid');
+var moment : any = require('moment');
 
 /**
  * Represents the PlaylistInfo Youtube's Source.
@@ -48,27 +50,167 @@ class PlaylistInfo extends SourceItf {
 			}
 		};
 
-		//var success = function(oauthActions) {
-			/*parseInt(self.getParams().Limit)
-			.setDurationToDisplay(parseInt(self.getParams().InfoDuration)
-			uuid.v1()
-			self.getSourceNamespaceManager().sendNewInfoToClient(tweetList);*/
+		var successRetrieveInfo = function(result1) {
+			var info = result1.data();
 
-		var successSearch = function(result) {
-			var data = result.data();
-			Logger.info("result.data");
-			Logger.debug(data);
+			if(info.items.length > 0) {
+
+				var playlistInfos = info.items[0];
+
+				var videoPlaylist : VideoPlaylist = new VideoPlaylist();
+				videoPlaylist.setId(playlistInfos.id);
+				var creationDate : any = moment(playlistInfos.snippet.publishedAt);
+				videoPlaylist.setCreationDate(creationDate.toDate());
+
+				var nbItems = parseInt(self.getParams().Limit);
+
+				videoPlaylist.setDurationToDisplay(nbItems*parseInt(self.getParams().InfoDuration));
+
+				// Manage title and description
+				videoPlaylist.setTitle(playlistInfos.snippet.title);
+				videoPlaylist.setDescription(playlistInfos.snippet.description);
+
+
+				// Manage thumbnail
+				var thumbnail : Picture = new Picture();
+				thumbnail.setTitle(playlistInfos.snippet.title);
+				thumbnail.setDescription(playlistInfos.snippet.description);
+
+				var thumbnailThumbInfos = playlistInfos.snippet.thumbnails.default;
+				var thumbnailThumb : PictureURL = new PictureURL();
+				thumbnailThumb.setURL(thumbnailThumbInfos.url);
+				thumbnailThumb.setWidth(thumbnailThumbInfos.width);
+				thumbnailThumb.setHeight(thumbnailThumbInfos.height);
+				thumbnail.setThumb(thumbnailThumb);
+
+				var thumbnailSmallInfos = playlistInfos.snippet.thumbnails.medium;
+				var thumbnailSmall : PictureURL = new PictureURL();
+				thumbnailSmall.setURL(thumbnailSmallInfos.url);
+				thumbnailSmall.setWidth(thumbnailSmallInfos.width);
+				thumbnailSmall.setHeight(thumbnailSmallInfos.height);
+				thumbnail.setSmall(thumbnailSmall);
+
+				var thumbnailMediumInfos = playlistInfos.snippet.thumbnails.high;
+				var thumbnailMedium : PictureURL = new PictureURL();
+				thumbnailMedium.setURL(thumbnailMediumInfos.url);
+				thumbnailMedium.setWidth(thumbnailMediumInfos.width);
+				thumbnailMedium.setHeight(thumbnailMediumInfos.height);
+				thumbnail.setMedium(thumbnailMedium);
+
+				var thumbnailLargeInfos = playlistInfos.snippet.thumbnails.standard;
+				var thumbnailLarge : PictureURL = new PictureURL();
+				thumbnailLarge.setURL(thumbnailLargeInfos.url);
+				thumbnailLarge.setWidth(thumbnailLargeInfos.width);
+				thumbnailLarge.setHeight(thumbnailLargeInfos.height);
+				thumbnail.setLarge(thumbnailLarge);
+
+				var thumbnailOriginalInfos = playlistInfos.snippet.thumbnails.maxres;
+				var thumbnailOriginal : PictureURL = new PictureURL();
+				thumbnailOriginal.setURL(thumbnailOriginalInfos.url);
+				thumbnailOriginal.setWidth(thumbnailOriginalInfos.width);
+				thumbnailOriginal.setHeight(thumbnailOriginalInfos.height);
+				thumbnail.setOriginal(thumbnailOriginal);
+
+				videoPlaylist.setThumbnail(thumbnail);
+
+				var successSearch = function (result2) {
+					var data = result2.data();
+
+					var videoIdsList = [];
+
+					data.items.forEach(function(item : any) {
+						videoIdsList.push(item.contentDetails.videoId);
+					});
+
+					var videoIdsListString = videoIdsList.join();
+
+					var successDetails = function(result3) {
+						var details = result3.data();
+
+						var totalPlaylistDurationInSeconds = 0;
+
+						details.items.forEach(function(item : any) {
+
+							var video : VideoURL = new VideoURL();
+							video.setId(item.id);
+							var videoCreationDate : any = moment(item.snippet.publishedAt);
+							video.setCreationDate(videoCreationDate.toDate());
+							var videoDuration : any = moment.duration(item.contentDetails.duration);
+							var videoDurationInSeconds = videoDuration.asSeconds();
+							video.setDurationToDisplay(videoDurationInSeconds);
+							totalPlaylistDurationInSeconds += videoDurationInSeconds;
+
+							// Manage title, description, url and VideoType
+							video.setTitle(item.snippet.title);
+							video.setDescription(item.snippet.description);
+							video.setURL("http://www.youtube.com/embed/" + item.id + "?autoplay=1&controls=0&modestbranding=1");
+							video.setType(VideoType.YOUTUBE);
+
+							// Manage thumbnail
+							var thumbnailVideo : Picture = new Picture();
+							thumbnailVideo.setTitle(item.snippet.title);
+							thumbnailVideo.setDescription(item.snippet.description);
+
+							var thumbnailVideoThumbInfos = item.snippet.thumbnails.default;
+							var thumbnailVideoThumb : PictureURL = new PictureURL();
+							thumbnailVideoThumb.setURL(thumbnailVideoThumbInfos.url);
+							thumbnailVideoThumb.setWidth(thumbnailVideoThumbInfos.width);
+							thumbnailVideoThumb.setHeight(thumbnailVideoThumbInfos.height);
+							thumbnailVideo.setThumb(thumbnailVideoThumb);
+
+							var thumbnailVideoSmallInfos = item.snippet.thumbnails.medium;
+							var thumbnailVideoSmall : PictureURL = new PictureURL();
+							thumbnailVideoSmall.setURL(thumbnailVideoSmallInfos.url);
+							thumbnailVideoSmall.setWidth(thumbnailVideoSmallInfos.width);
+							thumbnailVideoSmall.setHeight(thumbnailVideoSmallInfos.height);
+							thumbnailVideo.setSmall(thumbnailVideoSmall);
+
+							var thumbnailVideoMediumInfos = item.snippet.thumbnails.high;
+							var thumbnailVideoMedium : PictureURL = new PictureURL();
+							thumbnailVideoMedium.setURL(thumbnailVideoMediumInfos.url);
+							thumbnailVideoMedium.setWidth(thumbnailVideoMediumInfos.width);
+							thumbnailVideoMedium.setHeight(thumbnailVideoMediumInfos.height);
+							thumbnailVideo.setMedium(thumbnailVideoMedium);
+
+							var thumbnailVideoLargeInfos = item.snippet.thumbnails.standard;
+							var thumbnailVideoLarge : PictureURL = new PictureURL();
+							thumbnailVideoLarge.setURL(thumbnailVideoLargeInfos.url);
+							thumbnailVideoLarge.setWidth(thumbnailVideoLargeInfos.width);
+							thumbnailVideoLarge.setHeight(thumbnailVideoLargeInfos.height);
+							thumbnailVideo.setLarge(thumbnailVideoLarge);
+
+							var thumbnailVideoOriginalInfos = item.snippet.thumbnails.maxres;
+							var thumbnailVideoOriginal : PictureURL = new PictureURL();
+							thumbnailVideoOriginal.setURL(thumbnailVideoOriginalInfos.url);
+							thumbnailVideoOriginal.setWidth(thumbnailVideoOriginalInfos.width);
+							thumbnailVideoOriginal.setHeight(thumbnailVideoOriginalInfos.height);
+							thumbnailVideo.setOriginal(thumbnailVideoOriginal);
+
+							video.setThumbnail(thumbnailVideo);
+
+							videoPlaylist.addVideo(video);
+						});
+
+						videoPlaylist.setDurationToDisplay(totalPlaylistDurationInSeconds);
+
+						self.getSourceNamespaceManager().sendNewInfoToClient(videoPlaylist);
+					};
+
+					var videosDetailsUrl = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + videoIdsListString + '&maxResults=' + nbItems +'&key=' + Youtube.youtubeAPIKey;
+
+					RestClient.get(videosDetailsUrl, successDetails, fail);
+				};
+
+				var playlistContentUrl = 'https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=' + nbItems +'&key=' + Youtube.youtubeAPIKey;
+
+				RestClient.get(playlistContentUrl, successSearch, fail);
+			} else {
+				fail(new Error("Playlist not found..."));
+			}
 		};
 
-		var searchUrl = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20&key=' + Youtube.youtubeAPIKey;
+		var retrieveInfoUrl = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&id=' + self.getParams().YoutubePlaylistId + '&key=' + Youtube.youtubeAPIKey;
 
-		Logger.info("searchUrl => " + searchUrl);
-
-		RestClient.get(searchUrl, successSearch, fail);
-
-			//oauthActions.get(searchUrl, successSearch, fail);
-		//};
-
-		//self.getSourceNamespaceManager().manageOAuth('youtube', self.getParams().oauthKey, success, fail);
+		RestClient.get(retrieveInfoUrl, successRetrieveInfo, fail);
 	}
 }
