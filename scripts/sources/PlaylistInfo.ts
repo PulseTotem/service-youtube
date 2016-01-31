@@ -7,6 +7,8 @@
 
 /// <reference path="../../t6s-core/core-backend/scripts/server/SourceItf.ts" />
 
+/// <reference path="../../t6s-core/core-backend/scripts/RestClient.ts" />
+
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoPlaylist.ts" />
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoURL.ts" />
 /// <reference path="../../t6s-core/core-backend/t6s-core/core/scripts/infotype/VideoType.ts" />
@@ -46,27 +48,27 @@ class PlaylistInfo extends SourceItf {
 			}
 		};
 
-		var success = function(oauthActions) {
+		//var success = function(oauthActions) {
 			/*parseInt(self.getParams().Limit)
 			.setDurationToDisplay(parseInt(self.getParams().InfoDuration)
 			uuid.v1()
 			self.getSourceNamespaceManager().sendNewInfoToClient(tweetList);*/
 
-			var successSearch = function(result) {
-				Logger.info("result");
-				Logger.debug(result);
-			};
-
-			Logger.info("youtubeOAuth OK ! => oauthActions")
-			Logger.debug(oauthActions);
-
-			var searchUrl = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20';
-
-			Logger.info("searchUrl => " + searchUrl);
-
-			oauthActions.get(searchUrl, successSearch, fail);
+		var successSearch = function(result) {
+			var data = result.data();
+			Logger.info("result.data");
+			Logger.debug(data);
 		};
 
-		self.getSourceNamespaceManager().manageOAuth('youtube', self.getParams().oauthKey, success, fail);
+		var searchUrl = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails,id,status&playlistId=' + self.getParams().YoutubePlaylistId + '&maxResults=20&key=' + Youtube.youtubeAPIKey;
+
+		Logger.info("searchUrl => " + searchUrl);
+
+		RestClient.get(searchUrl, successSearch, fail);
+
+			//oauthActions.get(searchUrl, successSearch, fail);
+		//};
+
+		//self.getSourceNamespaceManager().manageOAuth('youtube', self.getParams().oauthKey, success, fail);
 	}
 }

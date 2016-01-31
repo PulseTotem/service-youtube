@@ -17,7 +17,7 @@
  */
 class Youtube extends SourceServer {
 
-
+	static youtubeAPIKey : string;
 
     /**
      * Constructor.
@@ -38,6 +38,12 @@ class Youtube extends SourceServer {
      */
     init() {
         var self = this;
+
+		if (process.env.YOUTUBE_API_KEY == undefined) {
+			Youtube.youtubeAPIKey = "";
+		} else {
+			Youtube.youtubeAPIKey = process.env.YOUTUBE_API_KEY;
+		}
 
         this.addNamespace("Youtube", YoutubeNamespaceManager);
     }
