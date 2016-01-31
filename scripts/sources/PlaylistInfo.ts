@@ -76,40 +76,51 @@ class PlaylistInfo extends SourceItf {
 				thumbnail.setTitle(playlistInfos.snippet.title);
 				thumbnail.setDescription(playlistInfos.snippet.description);
 
-				var thumbnailThumbInfos = playlistInfos.snippet.thumbnails.default;
-				var thumbnailThumb : PictureURL = new PictureURL();
-				thumbnailThumb.setURL(thumbnailThumbInfos.url);
-				thumbnailThumb.setWidth(thumbnailThumbInfos.width);
-				thumbnailThumb.setHeight(thumbnailThumbInfos.height);
-				thumbnail.setThumb(thumbnailThumb);
 
-				var thumbnailSmallInfos = playlistInfos.snippet.thumbnails.medium;
-				var thumbnailSmall : PictureURL = new PictureURL();
-				thumbnailSmall.setURL(thumbnailSmallInfos.url);
-				thumbnailSmall.setWidth(thumbnailSmallInfos.width);
-				thumbnailSmall.setHeight(thumbnailSmallInfos.height);
-				thumbnail.setSmall(thumbnailSmall);
+				if(typeof(playlistInfos.snippet.thumbnails.default) != "undefined") {
+					var thumbnailThumbInfos = playlistInfos.snippet.thumbnails.default;
+					var thumbnailThumb:PictureURL = new PictureURL();
+					thumbnailThumb.setURL(thumbnailThumbInfos.url);
+					thumbnailThumb.setWidth(thumbnailThumbInfos.width);
+					thumbnailThumb.setHeight(thumbnailThumbInfos.height);
+					thumbnail.setThumb(thumbnailThumb);
+				}
 
-				var thumbnailMediumInfos = playlistInfos.snippet.thumbnails.high;
-				var thumbnailMedium : PictureURL = new PictureURL();
-				thumbnailMedium.setURL(thumbnailMediumInfos.url);
-				thumbnailMedium.setWidth(thumbnailMediumInfos.width);
-				thumbnailMedium.setHeight(thumbnailMediumInfos.height);
-				thumbnail.setMedium(thumbnailMedium);
+				if(typeof(playlistInfos.snippet.thumbnails.medium) != "undefined") {
+					var thumbnailSmallInfos = playlistInfos.snippet.thumbnails.medium;
+					var thumbnailSmall:PictureURL = new PictureURL();
+					thumbnailSmall.setURL(thumbnailSmallInfos.url);
+					thumbnailSmall.setWidth(thumbnailSmallInfos.width);
+					thumbnailSmall.setHeight(thumbnailSmallInfos.height);
+					thumbnail.setSmall(thumbnailSmall);
+				}
 
-				var thumbnailLargeInfos = playlistInfos.snippet.thumbnails.standard;
-				var thumbnailLarge : PictureURL = new PictureURL();
-				thumbnailLarge.setURL(thumbnailLargeInfos.url);
-				thumbnailLarge.setWidth(thumbnailLargeInfos.width);
-				thumbnailLarge.setHeight(thumbnailLargeInfos.height);
-				thumbnail.setLarge(thumbnailLarge);
+				if(typeof(playlistInfos.snippet.thumbnails.high) != "undefined") {
+					var thumbnailMediumInfos = playlistInfos.snippet.thumbnails.high;
+					var thumbnailMedium:PictureURL = new PictureURL();
+					thumbnailMedium.setURL(thumbnailMediumInfos.url);
+					thumbnailMedium.setWidth(thumbnailMediumInfos.width);
+					thumbnailMedium.setHeight(thumbnailMediumInfos.height);
+					thumbnail.setMedium(thumbnailMedium);
+				}
 
-				var thumbnailOriginalInfos = playlistInfos.snippet.thumbnails.maxres;
-				var thumbnailOriginal : PictureURL = new PictureURL();
-				thumbnailOriginal.setURL(thumbnailOriginalInfos.url);
-				thumbnailOriginal.setWidth(thumbnailOriginalInfos.width);
-				thumbnailOriginal.setHeight(thumbnailOriginalInfos.height);
-				thumbnail.setOriginal(thumbnailOriginal);
+				if(typeof(playlistInfos.snippet.thumbnails.standard) != "undefined") {
+					var thumbnailLargeInfos = playlistInfos.snippet.thumbnails.standard;
+					var thumbnailLarge:PictureURL = new PictureURL();
+					thumbnailLarge.setURL(thumbnailLargeInfos.url);
+					thumbnailLarge.setWidth(thumbnailLargeInfos.width);
+					thumbnailLarge.setHeight(thumbnailLargeInfos.height);
+					thumbnail.setLarge(thumbnailLarge);
+				}
+
+				if(typeof(playlistInfos.snippet.thumbnails.maxres) != "undefined") {
+					var thumbnailOriginalInfos = playlistInfos.snippet.thumbnails.maxres;
+					var thumbnailOriginal:PictureURL = new PictureURL();
+					thumbnailOriginal.setURL(thumbnailOriginalInfos.url);
+					thumbnailOriginal.setWidth(thumbnailOriginalInfos.width);
+					thumbnailOriginal.setHeight(thumbnailOriginalInfos.height);
+					thumbnail.setOriginal(thumbnailOriginal);
+				}
 
 				videoPlaylist.setThumbnail(thumbnail);
 
@@ -151,40 +162,50 @@ class PlaylistInfo extends SourceItf {
 							thumbnailVideo.setTitle(item.snippet.title);
 							thumbnailVideo.setDescription(item.snippet.description);
 
-							var thumbnailVideoThumbInfos = item.snippet.thumbnails.default;
-							var thumbnailVideoThumb : PictureURL = new PictureURL();
-							thumbnailVideoThumb.setURL(thumbnailVideoThumbInfos.url);
-							thumbnailVideoThumb.setWidth(thumbnailVideoThumbInfos.width);
-							thumbnailVideoThumb.setHeight(thumbnailVideoThumbInfos.height);
-							thumbnailVideo.setThumb(thumbnailVideoThumb);
+							if(typeof(item.snippet.thumbnails.default) != "undefined") {
+								var thumbnailVideoThumbInfos = item.snippet.thumbnails.default;
+								var thumbnailVideoThumb:PictureURL = new PictureURL();
+								thumbnailVideoThumb.setURL(thumbnailVideoThumbInfos.url);
+								thumbnailVideoThumb.setWidth(thumbnailVideoThumbInfos.width);
+								thumbnailVideoThumb.setHeight(thumbnailVideoThumbInfos.height);
+								thumbnailVideo.setThumb(thumbnailVideoThumb);
+							}
 
-							var thumbnailVideoSmallInfos = item.snippet.thumbnails.medium;
-							var thumbnailVideoSmall : PictureURL = new PictureURL();
-							thumbnailVideoSmall.setURL(thumbnailVideoSmallInfos.url);
-							thumbnailVideoSmall.setWidth(thumbnailVideoSmallInfos.width);
-							thumbnailVideoSmall.setHeight(thumbnailVideoSmallInfos.height);
-							thumbnailVideo.setSmall(thumbnailVideoSmall);
+							if(typeof(item.snippet.thumbnails.medium) != "undefined") {
+								var thumbnailVideoSmallInfos = item.snippet.thumbnails.medium;
+								var thumbnailVideoSmall:PictureURL = new PictureURL();
+								thumbnailVideoSmall.setURL(thumbnailVideoSmallInfos.url);
+								thumbnailVideoSmall.setWidth(thumbnailVideoSmallInfos.width);
+								thumbnailVideoSmall.setHeight(thumbnailVideoSmallInfos.height);
+								thumbnailVideo.setSmall(thumbnailVideoSmall);
+							}
 
-							var thumbnailVideoMediumInfos = item.snippet.thumbnails.high;
-							var thumbnailVideoMedium : PictureURL = new PictureURL();
-							thumbnailVideoMedium.setURL(thumbnailVideoMediumInfos.url);
-							thumbnailVideoMedium.setWidth(thumbnailVideoMediumInfos.width);
-							thumbnailVideoMedium.setHeight(thumbnailVideoMediumInfos.height);
-							thumbnailVideo.setMedium(thumbnailVideoMedium);
+							if(typeof(item.snippet.thumbnails.high) != "undefined") {
+								var thumbnailVideoMediumInfos = item.snippet.thumbnails.high;
+								var thumbnailVideoMedium:PictureURL = new PictureURL();
+								thumbnailVideoMedium.setURL(thumbnailVideoMediumInfos.url);
+								thumbnailVideoMedium.setWidth(thumbnailVideoMediumInfos.width);
+								thumbnailVideoMedium.setHeight(thumbnailVideoMediumInfos.height);
+								thumbnailVideo.setMedium(thumbnailVideoMedium);
+							}
 
-							var thumbnailVideoLargeInfos = item.snippet.thumbnails.standard;
-							var thumbnailVideoLarge : PictureURL = new PictureURL();
-							thumbnailVideoLarge.setURL(thumbnailVideoLargeInfos.url);
-							thumbnailVideoLarge.setWidth(thumbnailVideoLargeInfos.width);
-							thumbnailVideoLarge.setHeight(thumbnailVideoLargeInfos.height);
-							thumbnailVideo.setLarge(thumbnailVideoLarge);
+							if(typeof(item.snippet.thumbnails.standard) != "undefined") {
+								var thumbnailVideoLargeInfos = item.snippet.thumbnails.standard;
+								var thumbnailVideoLarge:PictureURL = new PictureURL();
+								thumbnailVideoLarge.setURL(thumbnailVideoLargeInfos.url);
+								thumbnailVideoLarge.setWidth(thumbnailVideoLargeInfos.width);
+								thumbnailVideoLarge.setHeight(thumbnailVideoLargeInfos.height);
+								thumbnailVideo.setLarge(thumbnailVideoLarge);
+							}
 
-							var thumbnailVideoOriginalInfos = item.snippet.thumbnails.maxres;
-							var thumbnailVideoOriginal : PictureURL = new PictureURL();
-							thumbnailVideoOriginal.setURL(thumbnailVideoOriginalInfos.url);
-							thumbnailVideoOriginal.setWidth(thumbnailVideoOriginalInfos.width);
-							thumbnailVideoOriginal.setHeight(thumbnailVideoOriginalInfos.height);
-							thumbnailVideo.setOriginal(thumbnailVideoOriginal);
+							if(typeof(item.snippet.thumbnails.maxres) != "undefined") {
+								var thumbnailVideoOriginalInfos = item.snippet.thumbnails.maxres;
+								var thumbnailVideoOriginal:PictureURL = new PictureURL();
+								thumbnailVideoOriginal.setURL(thumbnailVideoOriginalInfos.url);
+								thumbnailVideoOriginal.setWidth(thumbnailVideoOriginalInfos.width);
+								thumbnailVideoOriginal.setHeight(thumbnailVideoOriginalInfos.height);
+								thumbnailVideo.setOriginal(thumbnailVideoOriginal);
+							}
 
 							video.setThumbnail(thumbnailVideo);
 
