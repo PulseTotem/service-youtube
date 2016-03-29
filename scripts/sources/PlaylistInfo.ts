@@ -154,7 +154,7 @@ class PlaylistInfo extends SourceItf {
 							// Manage title, description, url and VideoType
 							video.setTitle(item.snippet.title);
 							video.setDescription(item.snippet.description);
-							video.setURL("http://www.youtube.com/embed/" + item.id + "?autoplay=1&controls=0&modestbranding=1");
+							video.setURL("https://www.youtube.com/embed/" + item.id + "?autoplay=1&controls=0&modestbranding=1");
 							video.setType(VideoType.YOUTUBE);
 
 							// Manage thumbnail
